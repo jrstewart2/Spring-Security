@@ -3,6 +3,8 @@ package stewart.jonathan.security1.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 @RestController
 public class HomeController {
 
@@ -12,8 +14,8 @@ public class HomeController {
     }
 
     @GetMapping("/user")
-    public String user() {
-        return "Hello user";
+    public String user(Principal principal) {
+        return "Hello " + principal.getName();
     }
 
     @GetMapping("/admin")

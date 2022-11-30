@@ -1,0 +1,16 @@
+server:
+  port:8080
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+
+          facebook:
+            client-id:
+            client-secret:
+
+          google:
+            client-id:
+            client-secret:
