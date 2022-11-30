@@ -26,6 +26,11 @@ public class StudentController {
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Student " + studentId + " does not exist"));
     }
+
+    @GetMapping("/")
+    public List<Student> getAllStudents() {
+        return STUDENTS;
+    }
 //
 //
 //    @GetMapping("/")
