@@ -59,6 +59,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/index.html", "/").permitAll()
                         .requestMatchers("/api/**").hasRole(STUDENT.name())
@@ -70,7 +71,7 @@ public class SecurityConfig {
 
 }
 
-// TIMESTAMP 2:06 https://www.youtube.com/watch?v=her_7pa0vrg
+// TIMESTAMP 2:14 https://www.youtube.com/watch?v=her_7pa0vrg
 // Cannot get POSTMAN  to return XSRF-TOKEN
 
 
