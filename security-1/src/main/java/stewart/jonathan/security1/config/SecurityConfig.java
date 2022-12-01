@@ -65,18 +65,28 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").hasRole(STUDENT.name())
                         .anyRequest()
                         .authenticated()
-                ).formLogin()
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/courses", true)
+                )
+                .formLogin()
+                    .loginPage("/login").permitAll()
+                    .defaultSuccessUrl("/courses", true)
+                .passwordParameter("password") // this is default anyway so don't need to put this in
+                .usernameParameter("username") // links to what name you called in in html file
                 .and()
                 .rememberMe().tokenValiditySeconds((int)TimeUnit.DAYS.toSeconds(21))
-                .key("somethingverysecure");
+                .key("somethingverysecure")
+                .rememberMeParameter("remember-me")
+                .and()
+                .logout().logoutUrl("/logout")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "remember-me")
+                .logoutSuccessUrl("/login");
         return http.build();
     }
 
 }
 
-// TIMESTAMP 2:35 https://www.youtube.com/watch?v=her_7pa0vrg
+// TIMESTAMP 2:58 https://www.youtube.com/watch?v=her_7pa0vrg
 
 
 
