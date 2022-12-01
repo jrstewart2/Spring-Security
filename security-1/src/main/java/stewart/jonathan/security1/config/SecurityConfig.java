@@ -65,7 +65,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").hasRole(STUDENT.name())
                         .anyRequest()
                         .authenticated()
-                ).formLogin().and().httpBasic().and().logout();
+                ).formLogin();
         return http.build();
     }
 
