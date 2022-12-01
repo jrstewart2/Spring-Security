@@ -16,6 +16,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import java.util.concurrent.TimeUnit;
+
 import static stewart.jonathan.security1.config.UserPermission.*;
 import static stewart.jonathan.security1.config.UserRole.*;
 
@@ -57,22 +59,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/index.html", "/").permitAll()
+                        .requestMatchers("index", "/", "/css/*", "/js/*").permitAll()
                         .requestMatchers("/api/**").hasRole(STUDENT.name())
                         .anyRequest()
                         .authenticated()
-                ).formLogin();
+                ).formLogin()
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/courses", true)
+                .and()
+                .rememberMe().tokenValiditySeconds((int)TimeUnit.DAYS.toSeconds(21))
+                .key("somethingverysecure");
         return http.build();
     }
 
 }
 
-// TIMESTAMP 2:14 https://www.youtube.com/watch?v=her_7pa0vrg
-// Cannot get POSTMAN  to return XSRF-TOKEN
+// TIMESTAMP 2:35 https://www.youtube.com/watch?v=her_7pa0vrg
+
 
 
 
