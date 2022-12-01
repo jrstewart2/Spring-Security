@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import static stewart.jonathan.security1.config.UserPermission.*;
 import static stewart.jonathan.security1.config.UserRole.*;
@@ -56,24 +57,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/index.html", "/").permitAll()
-                        .requestMatchers("/api/v1/students/*").hasRole("ADMIN")
-  // removed due to @PreAuthorize in controller
-//                        .requestMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
-//                        .requestMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
-//                        .requestMatchers(HttpMethod.PUT, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
-//                        .requestMatchers(HttpMethod.GET, "/management/api/*").hasAnyRole(ADMIN.name(), ADMINTRAINEE.name())
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/**").hasRole(STUDENT.name())
+                        .anyRequest()
+                        .authenticated()
                 ).formLogin().and().httpBasic().and().logout();
-
         return http.build();
     }
 
 }
 
-// TIMESTAMP 1:16:25 https://www.youtube.com/watch?v=her_7pa0vrg
+// TIMESTAMP 2:06 https://www.youtube.com/watch?v=her_7pa0vrg
+// Cannot get POSTMAN  to return XSRF-TOKEN
 
 
 
