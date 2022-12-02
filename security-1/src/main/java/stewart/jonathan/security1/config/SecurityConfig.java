@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,10 +14,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import stewart.jonathan.security1.auth.UserService;
+import stewart.jonathan.security1.jwt.JwtConfig;
 import stewart.jonathan.security1.jwt.JwtTokenVerifier;
 import stewart.jonathan.security1.jwt.JwtUsernamePasswordAuthenticationFilter;
 
-import java.util.concurrent.TimeUnit;
+import javax.crypto.SecretKey;
 
 import static stewart.jonathan.security1.config.UserRole.*;
 
@@ -29,16 +29,20 @@ public class SecurityConfig {
 
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    private final SecretKey secretKey;
+    private final JwtConfig jwtConfig;
+
 
     @Autowired
     public SecurityConfig(PasswordEncoder passwordEncoder,
-                          UserService userService) {
+                          UserService userService,
+                          SecretKey secretKey,
+                          JwtConfig jwtConfig) {
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
+        this.secretKey = secretKey;
+        this.jwtConfig = jwtConfig;
     }
-
-
-
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
@@ -61,8 +65,8 @@ public class SecurityConfig {
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager))
-                .addFilterAfter(new JwtTokenVerifier(), JwtUsernamePasswordAuthenticationFilter.class)
+                .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager, jwtConfig, secretKey))
+                .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("index", "/", "/css/*", "/js/*").permitAll()
                         .requestMatchers("/api/**").hasRole(STUDENT.name())
