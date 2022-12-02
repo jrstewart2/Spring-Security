@@ -1,10 +1,10 @@
-package stewart.jonathan.security1;
+package stewart.jonathan.SecurityDV;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Security1ApplicationTests {
+class SecurityDvApplicationTests {
 
 	@Test
 	void contextLoads() {

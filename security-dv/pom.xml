@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>stewart.jonathan</groupId>
-	<artifactId>security-1</artifactId>
+	<artifactId>Security-DV</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>security-1</name>
-	<description>Security demo project 1</description>
+	<name>Security-DV</name>
+	<description>Demo project for Spring Boot Security</description>
 	<properties>
 		<java.version>19</java.version>
 	</properties>
@@ -35,10 +35,6 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
 		</dependency>
 	</dependencies>
 

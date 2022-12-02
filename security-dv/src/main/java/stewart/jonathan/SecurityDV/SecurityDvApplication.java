@@ -1,13 +1,13 @@
-package stewart.jonathan.security1;
+package stewart.jonathan.SecurityDV;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Security1Application {
+public class SecurityDvApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Security1Application.class, args);
+		SpringApplication.run(SecurityDvApplication.class, args);
 	}
 
 }
